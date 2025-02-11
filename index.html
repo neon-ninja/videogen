@@ -1,0 +1,56 @@
+<html>
+
+<head>
+  <title>Hunyuan video generator</title>
+</head>
+
+<body>
+  Prompt: <textarea id="prompt" rows="4" cols="50">A cat walks on the grass, realistic style.</textarea><br>
+  Width (px) <input id="width" type="number" value="720" /><br>
+  Height (px) <input id="height" type="number" value="480" /><br>
+  # frames: <input id="num_frames" type="number" value="24" /><br>
+  Civitai LoRA: <input id="lora" type="number" value="0" /><br>
+  <input type="submit" value="Submit" /><br>
+  <div id="status"></div>
+
+  <script>
+    var submit = document.querySelector('input[type="submit"]');
+    submit.addEventListener('click', function () {
+      var prompt = document.getElementById('prompt').value;
+      var width = parseInt(document.getElementById('width').value);
+      var height = parseInt(document.getElementById('height').value);
+      var num_frames = parseInt(document.getElementById('num_frames').value);
+      var lora = parseInt(document.getElementById('lora').value);
+      // https://ai.auckland-cer.cloud.edu.au/docs#/default/predict_predictions_post
+      document.getElementById('status').innerText = 'Processing...';
+      fetch('https://ai.auckland-cer.cloud.edu.au/predictions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          input: {
+            prompt: prompt,
+            width: width,
+            height: height,
+            frames: num_frames,
+            lora: lora
+          }
+        })
+      })
+        .then(response => response.json())
+        .then(function (data) {
+          console.log(data)
+          if (!data.metrics) {
+            document.getElementById('status').innerText = "Error: " + (data.detail || data.error);
+            return;
+          }
+          document.getElementById('status').innerHTML = `Completed in ${data.metrics.predict_time.toLocaleString()}s<br>
+            <video src="${data.output}" controls></video>`;
+        })
+        .catch(error => document.getElementById('status').innerText = "Error: " + error);
+    });
+  </script>
+</body>
+
+</html>
