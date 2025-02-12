@@ -9,6 +9,8 @@
   Width (px) <input id="width" type="number" value="848" min=16 /><br>
   Height (px) <input id="height" type="number" value="480" min=16 /><br>
   # frames: <input id="length" type="number" value="73" min=1 /><br>
+  FluxGuidance: <input id="fluxguidance" type="number" value="6.0" /> Controls generation guidance strength. Higher
+  values make results closer to prompts but may affect video quality<br>
   seed: <input id="seed" type="number" value="0" /><input type="submit" value="Randomise" /><br>
   <!-- Civitai LoRA: <input id="lora" type="number" value="0" /><br> -->
   <input type="submit" value="Submit" /><br>
@@ -29,6 +31,8 @@
       template[45].inputs.height = height;
       var length = parseInt(document.getElementById('length').value);
       template[45].inputs.length = length;
+      var guidance = parseInt(document.getElementById('fluxguidance').value);
+      template[26].inputs.guidance = guidance;
       var seed = parseInt(document.getElementById('seed').value);
       template[25].inputs.noise_seed = seed;
       //var lora = parseInt(document.getElementById('lora').value);
