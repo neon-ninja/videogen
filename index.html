@@ -6,9 +6,9 @@
 
 <body>
   Prompt: <textarea id="prompt" rows="4" cols="50">A cat walks on the grass, realistic style.</textarea><br>
-  Width (px) <input id="width" type="number" value="848" /><br>
-  Height (px) <input id="height" type="number" value="480" /><br>
-  # frames: <input id="length" type="number" value="73" /><br>
+  Width (px) <input id="width" type="number" value="848" min=16 /><br>
+  Height (px) <input id="height" type="number" value="480" min=16 /><br>
+  # frames: <input id="length" type="number" value="73" min=1 /><br>
   seed: <input id="seed" type="number" value="0" /><input type="submit" value="Randomise" /><br>
   <!-- Civitai LoRA: <input id="lora" type="number" value="0" /><br> -->
   <input type="submit" value="Submit" /><br>
@@ -48,9 +48,14 @@
         .then(response => response.json())
         .then(function (data) {
           console.log(data)
-          var time = Math.round((new Date().getTime() - start) / 1000);
-          document.title = "Hunyuan video generator: Done!"
-          document.getElementById('status').innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><img src="data:image/webp;base64,${data.images[0]}" />`;
+          if (data.error) {
+            document.getElementById('status').innerText = "Error: " + data.message;
+            document.title = "Hunyuan video generator: Error!"
+          } else {
+            var time = Math.round((new Date().getTime() - start) / 1000);
+            document.title = "Hunyuan video generator: Done!"
+            document.getElementById('status').innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><img src="data:image/webp;base64,${data.images[0]}" />`;
+          }
         })
         .catch(error => document.getElementById('status').innerText = "Error: " + error);
     });
