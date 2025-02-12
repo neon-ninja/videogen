@@ -34,6 +34,7 @@
       //var lora = parseInt(document.getElementById('lora').value);
       // https://ai.auckland-cer.cloud.edu.au/docs#/default/predict_predictions_post
       document.getElementById('status').innerText = 'Processing...';
+      document.title = "Hunyuan video generator: Processing..."
       var start = new Date().getTime();
       fetch('https://ai.auckland-cer.cloud.edu.au/prompt', {
         method: 'POST',
@@ -48,6 +49,7 @@
         .then(function (data) {
           console.log(data)
           var time = Math.round((new Date().getTime() - start) / 1000);
+          document.title = "Hunyuan video generator: Done!"
           document.getElementById('status').innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><img src="data:image/webp;base64,${data.images[0]}" />`;
         })
         .catch(error => document.getElementById('status').innerText = "Error: " + error);
