@@ -9,6 +9,7 @@
   Width (px) <input id="width" type="number" value="848" /><br>
   Height (px) <input id="height" type="number" value="480" /><br>
   # frames: <input id="length" type="number" value="73" /><br>
+  seed: <input id="seed" type="number" value="0" /><input type="submit" value="Randomise" /><br>
   <!-- Civitai LoRA: <input id="lora" type="number" value="0" /><br> -->
   <input type="submit" value="Submit" /><br>
   <div id="status"></div>
@@ -16,8 +17,10 @@
   <script type="module">
     var template = await fetch("hunyuan_video_text_to_video_API.json").then(response => response.json());
     console.log(template)
-    var submit = document.querySelector('input[type="submit"]');
-    submit.addEventListener('click', function () {
+    document.querySelector('input[type="submit"][value="Randomise"]').addEventListener('click', function () {
+      document.getElementById('seed').value = Math.floor(Math.random() * 1000000);
+    });
+    document.querySelector('input[type="submit"][value="Submit"]').addEventListener('click', function () {
       var prompt = document.getElementById('prompt').value;
       template[44].inputs.text = prompt;
       var width = parseInt(document.getElementById('width').value);
@@ -26,6 +29,8 @@
       template[45].inputs.height = height;
       var length = parseInt(document.getElementById('length').value);
       template[45].inputs.length = length;
+      var seed = parseInt(document.getElementById('seed').value);
+      template[25].inputs.noise_seed = seed;
       //var lora = parseInt(document.getElementById('lora').value);
       // https://ai.auckland-cer.cloud.edu.au/docs#/default/predict_predictions_post
       document.getElementById('status').innerText = 'Processing...';
