@@ -47,7 +47,7 @@
         .then(response => response.json())
         .then(function (data) {
           console.log(data)
-          var time = (new Date().getTime() - start) / 1000;
+          var time = Math.round((new Date().getTime() - start) / 1000);
           document.getElementById('status').innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><img src="data:image/webp;base64,${data.images[0]}" />`;
         })
         .catch(error => document.getElementById('status').innerText = "Error: " + error);
