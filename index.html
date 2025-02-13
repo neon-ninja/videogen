@@ -40,10 +40,10 @@
       var seed = parseInt(document.getElementById('seed').value);
       template[25].inputs.noise_seed = seed;
       //var lora = parseInt(document.getElementById('lora').value);
-      // https://ai.auckland-cer.cloud.edu.au/docs#/default/predict_predictions_post
       document.getElementById('status').innerText = 'Processing...';
       document.title = "Hunyuan video generator: Processing..."
       var start = new Date().getTime();
+      // https://ai.auckland-cer.cloud.edu.au/docs#/default/predict_predictions_post
       fetch('https://ai.auckland-cer.cloud.edu.au/prompt', {
         method: 'POST',
         headers: {
