@@ -64,7 +64,8 @@
           } else {
             var time = Math.round((new Date().getTime() - start) / 1000);
             document.title = "Hunyuan video generator: Done!"
-            div.innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><img src="data:image/webp;base64,${data.images[0]}" />`;
+            var img = `"data:image/webp;base64,${data.images[0]}"`
+            div.innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><a href=${img} download="${prompt}.webp"><img src=${img} alt="${prompt}"/></a>`;
           }
         })
         .catch(error => div.innerText = "Error: " + error);
