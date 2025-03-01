@@ -1,5 +1,7 @@
-# Hunyuan video simple frontend
+# Wan video simple frontend
 
 ### Running the backend
 
-`docker run -d --gpus all -p 8188:8188 -p 3000:3000 --name comfy saladtechnologies/comfyui:comfy0.3.12-api1.8.1-hunyuanvideo-fp16`
+`git clone https://github.com/replicate/cog-wan-2.1.git`  
+`cog build`  
+`docker run --name wan -d -p 5000:5000 --gpus all cog-wan-21`  
