@@ -79,9 +79,10 @@
         .then(response => response.json())
         .then(function (data) {
           console.log(data)
-          if (data.error) {
-            div.innerText = "Error: " + data.error||data.detail;
+          if (!data.metrics) {
+            div.innerText = "Error: " + (data.detail || data.error);
             document.title = "Wan video generator: Error!"
+            return;
           } else {
             document.title = "Wan video generator: Done!"
             var time = data.metrics.predict_time.toLocaleString();
