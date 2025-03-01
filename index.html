@@ -15,7 +15,7 @@
     <option>High Quality (14B)</option>
   </select><br>
   Resolution: <select id="resolution"></select>
-  Steps: <input id="steps" type="number" value="50" min="10" max="50" /><br>
+  Steps: <input id="steps" type="number" value="30" min="10" max="50" /><br>
   Guidance: <input id="guidance" type="number" value="6" min="0" max="20" /><br>
   seed: <input id="seed" type="number" value="0" /><input type="submit" value="Randomise" /><br>
   <!-- Civitai LoRA: <input id="lora" type="number" value="0" /><br> -->
@@ -80,7 +80,7 @@
         .then(function (data) {
           console.log(data)
           if (data.error) {
-            div.innerText = "Error: " + data.message;
+            div.innerText = "Error: " + data.error;
             document.title = "Wan video generator: Error!"
           } else {
             document.title = "Wan video generator: Done!"
