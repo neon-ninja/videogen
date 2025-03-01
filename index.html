@@ -80,7 +80,7 @@
         .then(function (data) {
           console.log(data)
           if (data.error) {
-            div.innerText = "Error: " + data.error;
+            div.innerText = "Error: " + data.error||data.detail;
             document.title = "Wan video generator: Error!"
           } else {
             document.title = "Wan video generator: Done!"
