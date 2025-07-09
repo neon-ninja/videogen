@@ -14,4 +14,4 @@
 
 ### LTXV
 
-`docker run -d -p 5001:5000 --gpus=all r8.im/lightricks/ltx-video@sha256:8c47da666861d081eeb4d1261853087de23923a268a69b63febdf5dc1dee08e4`
+`docker run --name ltxv -d -p 5001:5000 --gpus=all r8.im/lightricks/ltx-video@sha256:8c47da666861d081eeb4d1261853087de23923a268a69b63febdf5dc1dee08e4`
