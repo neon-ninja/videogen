@@ -11,6 +11,7 @@
     href="https://github.com/neon-ninja/videogen/issues/new">here</a><br>
   Prompt: <textarea id="prompt" rows="4" cols="50">A cat walks on the grass, realistic style.</textarea><br>
   Steps: <input id="steps" type="number" value="30" min="10" max="50" /><br>
+  # frames: <input id="length" type="number" value="97" min=1 /><br>
   <input type="submit" value="Submit" /><br>
   <div id="results"></div>
 
@@ -18,6 +19,7 @@
     document.querySelector('input[type="submit"][value="Submit"]').addEventListener('click', function () {
       var prompt = document.getElementById('prompt').value;
       var steps = parseInt(document.getElementById('steps').value);
+      var length = parseInt(document.getElementById('length').value);
       var div = document.createElement('div')
       document.getElementById('results').prepend(div)
       div.innerText = 'Processing...';
@@ -33,7 +35,7 @@
             cfg: 3,
             model: "0.9.1",
             steps: steps,
-            length: 97,
+            length: length,
             prompt: prompt,
             target_size: 640,
             aspect_ratio: "16:9",
