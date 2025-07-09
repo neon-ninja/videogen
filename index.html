@@ -3,61 +3,25 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wan video generator</title>
+  <title>LTXV video generator</title>
 </head>
 
 <body>
   Raise any issues <a
-    href="https://github.com/neon-ninja/wan/issues/new">here</a><br>
+    href="https://github.com/neon-ninja/videogen/issues/new">here</a><br>
   Prompt: <textarea id="prompt" rows="4" cols="50">A cat walks on the grass, realistic style.</textarea><br>
-  Model quality: <select id="quality">
-    <option>Standard (1.3B)</option>
-    <option>High Quality (14B)</option>
-  </select><br>
-  Resolution: <select id="resolution"></select>
   Steps: <input id="steps" type="number" value="30" min="10" max="50" /><br>
-  Guidance: <input id="guidance" type="number" value="6" min="0" max="20" /><br>
-  seed: <input id="seed" type="number" value="0" /><input type="submit" value="Randomise" /><br>
-  <!-- Civitai LoRA: <input id="lora" type="number" value="0" /><br> -->
   <input type="submit" value="Submit" /><br>
   <div id="results"></div>
 
   <script type="module">
-    document.querySelector('input[type="submit"][value="Randomise"]').addEventListener('click', function () {
-      document.getElementById('seed').value = Math.floor(Math.random() * 1000000);
-    });
-    var resolutions = [
-        //# T2V-1.3B resolutions
-        "Landscape SD (832×480)",
-        "Portrait SD (480×832)",
-        "Square SD (624×624)",
-        "Wide SD (704×544)",
-        "Tall SD (544×704)",
-        //# T2V/I2V-14B resolutions
-        "Landscape HD (1280×720)",
-        "Portrait HD (720×1280)",
-        "Widescreen HD (1088×832)",
-        "Portrait HD (832×1088)",
-        "Square HD (960×960)",
-        "Square HD+ (1024×1024)",
-    ]
-    for (var r of resolutions) {
-      var option = document.createElement('option');
-      option.text = r;
-      document.getElementById('resolution').add(option);
-    }
     document.querySelector('input[type="submit"][value="Submit"]').addEventListener('click', function () {
       var prompt = document.getElementById('prompt').value;
-      var quality = document.getElementById('quality').value;
-      var resolution = document.getElementById('resolution').value;
       var steps = parseInt(document.getElementById('steps').value);
-      var guidance = parseInt(document.getElementById('guidance').value);
-      var seed = parseInt(document.getElementById('seed').value);
-      //var lora = parseInt(document.getElementById('lora').value);
       var div = document.createElement('div')
       document.getElementById('results').prepend(div)
       div.innerText = 'Processing...';
-      document.title = "Wan video generator: Processing..."
+      document.title = "LTXV video generator: Processing..."
       // https://ai.auckland-cer.cloud.edu.au/docs#/default/predict_predictions_post
       fetch('https://ai.auckland-cer.cloud.edu.au/predictions', {
         method: 'POST',
@@ -66,13 +30,15 @@
         },
         body: JSON.stringify({
           input: {
+            cfg: 3,
+            model: "0.9.1",
+            steps: steps,
+            length: 97,
             prompt: prompt,
-            model_quality: quality,
-            resolution: resolution,
-            sample_steps: steps,
-            sample_guide_scale: guidance,
-            sample_shift: 8,
-            seed: seed
+            target_size: 640,
+            aspect_ratio: "16:9",
+            negative_prompt: "low quality, worst quality, deformed, distorted, watermark",
+            image_noise_scale: 0.15,
           }
         })
       })
@@ -81,10 +47,10 @@
           console.log(data)
           if (!data.metrics) {
             div.innerText = "Error: " + (data.detail || data.error);
-            document.title = "Wan video generator: Error!"
+            document.title = "LTXV video generator: Error!"
             return;
           } else {
-            document.title = "Wan video generator: Done!"
+            document.title = "LTXV video generator: Done!"
             var time = data.metrics.predict_time.toLocaleString();
             div.innerHTML = `Prompt: ${prompt}<br>Generated in ${time}s<br>Result:<br><video src="${data.output}" controls></video>`;
           }
